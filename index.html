@@ -14,3 +14,22 @@
 <script src='assets/js/app.js'></script>
 </body>
 </html>
+<textarea id="input"></textarea>
+<button onclick="enviar()">Perguntar</button>
+
+<div id="resposta"></div>
+
+<script>
+async function enviar() {
+  const mensagem = document.getElementById("input").value;
+
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ mensagem })
+  });
+
+  const data = await res.json();
+  document.getElementById("resposta").innerText = data.resposta;
+}
+</script>
