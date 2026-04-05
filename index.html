@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html lang='pt-br'>
+<html>
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<title>WET Hermes</title>
-<link rel='stylesheet' href='assets/css/style.css'>
+  <title>Hermes IA</title>
 </head>
 <body>
-<h1>?? WET Hermes</h1>
-<input id='input' placeholder='Digite algo...' />
-<button onclick='sendMessage()'>Enviar</button>
-<pre id='output'></pre>
-<script src='assets/js/app.js'></script>
-</body>
-</html>
-<textarea id="input"></textarea>
-<button onclick="enviar()">Perguntar</button>
 
-<div id="resposta"></div>
+<h1>Hermes IA</h1>
+
+<h2>Chat IA</h2>
+<textarea id="input"></textarea>
+<button onclick="chat()">Perguntar</button>
+
+<h2>Gerar Ebook</h2>
+<input id="tema" placeholder="tema do ebook">
+<button onclick="ebook()">Criar Ebook</button>
+
+<pre id="resposta"></pre>
 
 <script>
-async function enviar() {
+async function chat() {
   const mensagem = document.getElementById("input").value;
 
   const res = await fetch("/api/chat", {
@@ -32,4 +30,20 @@ async function enviar() {
   const data = await res.json();
   document.getElementById("resposta").innerText = data.resposta;
 }
+
+async function ebook() {
+  const tema = document.getElementById("tema").value;
+
+  const res = await fetch("/api/ebook", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ tema })
+  });
+
+  const data = await res.json();
+  document.getElementById("resposta").innerText = data.ebook;
+}
 </script>
+
+</body>
+</html>

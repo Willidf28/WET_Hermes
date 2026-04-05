@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       model: "openai/gpt-4o-mini",
       messages: [{
         role: "user",
-        content: `Crie um ebook completo sobre: ${tema}`
+        content: `Crie um ebook com capítulos sobre: ${tema}`
       }]
     })
   });
@@ -19,6 +19,6 @@ export default async function handler(req, res) {
   const data = await response.json();
 
   res.status(200).json({
-    ebook: data.choices?.[0]?.message?.content
+    ebook: data.choices?.[0]?.message?.content || "erro"
   });
 }
