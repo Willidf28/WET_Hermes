@@ -1,36 +1,24 @@
 ﻿export default async function handler(req, res) {
   try {
-    if (req.method !== "POST") {
-      return res.status(200).json({ resposta: "API online" });
-    }
-
-    const { mensagem } = req.body || {};
-
-    if (!mensagem) {
-      return res.status(200).json({ resposta: "Sem mensagem enviada" });
-    }
-
     const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + process.env.OPENROUTER_API_KEY,
+        "Authorization": v1-2fbcf29cce2e6551f1592adb6975b0655e31055812ac2ec8a6e36321baa7f678,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         model: "openai/gpt-4o-mini",
-        messages: [{ role: "user", content: mensagem }]
+        messages: [
+          { role: "user", content: "responda: funcionando" }
+        ]
       })
     });
 
     const d = await r.json();
 
-    res.status(200).json({
-      resposta: d?.choices?.[0]?.message?.content || JSON.stringify(d)
-    });
+    res.status(200).json(d);
 
   } catch (e) {
-    res.status(200).json({
-      resposta: "ERRO: " + e.message
-    });
+    res.status(200).json({ erro: e.message });
   }
 }
