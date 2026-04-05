@@ -1,24 +1,26 @@
 ﻿export default async function handler(req, res) {
+  if (req.method !== "POST") return res.status(200).json({ ok: true });
+
   const { tema } = req.body;
 
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Authorization": Bearer ,
+      "Authorization": "Bearer " + process.env.OPENROUTER_API_KEY,
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
       model: "openai/gpt-4o-mini",
       messages: [{
         role: "user",
-        content: Crie um ebook com capÃ­tulos sobre: 
+        content: "Crie um ebook com capÃ­tulos sobre: " + tema
       }]
     })
   });
 
-  const data = await response.json();
+  const d = await r.json();
 
   res.status(200).json({
-    ebook: data.choices?.[0]?.message?.content || "erro"
+    ebook: d?.choices?.[0]?.message?.content || "SEM RESPOSTA"
   });
 }

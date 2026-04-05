@@ -1,65 +1,55 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-  <title>Hermes IA</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    button { margin: 5px; }
-    .aba { display: none; }
-    .ativa { display: block; }
-  </style>
+<meta charset="UTF-8">
+<title>Hermes IA</title>
+<style>
+body { font-family: Arial; padding:20px; background:#111; color:#fff; }
+button { padding:10px; margin:5px; }
+textarea, input { width:100%; margin:5px 0; }
+.aba { display:none; }
+.ativa { display:block; }
+</style>
 </head>
 <body>
 
 <h1>Hermes IA</h1>
 
-<button onclick="mostrar('chat')">Chat IA</button>
-<button onclick="mostrar('ebook')">Ebook</button>
+<button onclick="tab('chat')">Chat</button>
+<button onclick="tab('ebook')">Ebook</button>
 
 <div id="chat" class="aba ativa">
-  <h2>Chat</h2>
-  <textarea id="input"></textarea><br>
-  <button onclick="chat()">Enviar</button>
+<h2>Chat IA</h2>
+<textarea id="msg"></textarea>
+<button onclick="chat()">Enviar</button>
 </div>
 
 <div id="ebook" class="aba">
-  <h2>Ebook</h2>
-  <input id="tema" placeholder="Tema"><br>
-  <button onclick="ebook()">Gerar Ebook</button>
+<h2>Ebook</h2>
+<input id="tema" placeholder="tema">
+<button onclick="ebook()">Gerar</button>
 </div>
 
-<pre id="resposta"></pre>
+<pre id="out"></pre>
 
 <script>
-function mostrar(id){
-  document.querySelectorAll('.aba').forEach(e=>e.classList.remove('ativa'));
-  document.getElementById(id).classList.add('ativa');
+function tab(t){
+ document.querySelectorAll('.aba').forEach(x=>x.classList.remove('ativa'));
+ document.getElementById(t).classList.add('ativa');
 }
 
 async function chat(){
-  const mensagem = document.getElementById("input").value;
-
-  const res = await fetch("/api/chat", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({ mensagem })
-  });
-
-  const data = await res.json();
-  document.getElementById("resposta").innerText = data.resposta;
+ const m = document.getElementById("msg").value;
+ const r = await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mensagem:m})});
+ const d = await r.json();
+ document.getElementById("out").innerText = d.resposta;
 }
 
 async function ebook(){
-  const tema = document.getElementById("tema").value;
-
-  const res = await fetch("/api/ebook", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({ tema })
-  });
-
-  const data = await res.json();
-  document.getElementById("resposta").innerText = data.ebook;
+ const t = document.getElementById("tema").value;
+ const r = await fetch("/api/ebook",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({tema:t})});
+ const d = await r.json();
+ document.getElementById("out").innerText = d.ebook;
 }
 </script>
 
