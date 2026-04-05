@@ -2,28 +2,46 @@
 <html>
 <head>
   <title>Hermes IA</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    button { margin: 5px; }
+    .aba { display: none; }
+    .ativa { display: block; }
+  </style>
 </head>
 <body>
 
 <h1>Hermes IA</h1>
 
-<h2>Chat IA</h2>
-<textarea id="input"></textarea>
-<button onclick="chat()">Perguntar</button>
+<button onclick="mostrar('chat')">Chat IA</button>
+<button onclick="mostrar('ebook')">Ebook</button>
 
-<h2>Gerar Ebook</h2>
-<input id="tema" placeholder="tema do ebook">
-<button onclick="ebook()">Criar Ebook</button>
+<div id="chat" class="aba ativa">
+  <h2>Chat</h2>
+  <textarea id="input"></textarea><br>
+  <button onclick="chat()">Enviar</button>
+</div>
+
+<div id="ebook" class="aba">
+  <h2>Ebook</h2>
+  <input id="tema" placeholder="Tema"><br>
+  <button onclick="ebook()">Gerar Ebook</button>
+</div>
 
 <pre id="resposta"></pre>
 
 <script>
-async function chat() {
+function mostrar(id){
+  document.querySelectorAll('.aba').forEach(e=>e.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+}
+
+async function chat(){
   const mensagem = document.getElementById("input").value;
 
   const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
     body: JSON.stringify({ mensagem })
   });
 
@@ -31,12 +49,12 @@ async function chat() {
   document.getElementById("resposta").innerText = data.resposta;
 }
 
-async function ebook() {
+async function ebook(){
   const tema = document.getElementById("tema").value;
 
   const res = await fetch("/api/ebook", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
     body: JSON.stringify({ tema })
   });
 
