@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#111;color:#fff;font-family:Arial;padding:20px">
+
+<h1>Hermes IA</h1>
+
+<textarea id="msg"></textarea>
+<button onclick="chat()">Enviar</button>
+
+<pre id="out"></pre>
+
+<script>
+async function chat(){
+  out.innerText="carregando...";
+  const r = await fetch("/api/chat", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({mensagem:msg.value})
+  });
+  out.innerText = JSON.stringify(await r.json(),null,2);
+}
+</script>
+
+</body>
+</html>
