@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "grok-2-latest",
+        model: "grok-beta",
         messages: [
           { role: "user", content: mensagem }
         ]
