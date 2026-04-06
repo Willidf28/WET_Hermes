@@ -2,27 +2,25 @@ export default async function handler(req, res) {
   try {
     const { mensagem } = req.body || {};
 
-    const r = await fetch(
-      "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + process.env.HF_API_KEY,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          inputs: mensagem || "oi"
-        })
-      }
-    );
+    const r = await fetch("https://api.x.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + process.env.XAI_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "grok-1",
+        messages: [
+          { role: "user", content: mensagem || "oi" }
+        ]
+      })
+    });
 
     const d = await r.json();
 
-    const resposta = Array.isArray(d)
-      ? d[0]?.generated_text
-      : JSON.stringify(d);
-
-    res.status(200).json({ resposta });
+    res.status(200).json({
+      resposta: d?.choices?.[0]?.message?.content || JSON.stringify(d)
+    });
 
   } catch (e) {
     res.status(200).json({ erro: e.message });
