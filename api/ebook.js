@@ -24,3 +24,32 @@
     ebook: d?.choices?.[0]?.message?.content || "SEM RESPOSTA"
   });
 }
+export default async function handler(req, res) {
+  try {
+    const { tema } = req.body || {};
+
+    const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + process.env.OPENROUTER_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-4o-mini",
+        messages: [{
+          role: "user",
+          content: `Crie um ebook completo sobre: ${tema}`
+        }]
+      })
+    });
+
+    const d = await r.json();
+
+    res.status(200).json({
+      ebook: d?.choices?.[0]?.message?.content
+    });
+
+  } catch (e) {
+    res.status(200).json({ erro: e.message });
+  }
+}
