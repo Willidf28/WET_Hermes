@@ -3,14 +3,14 @@ export default async function handler(req, res) {
     const body = req.body ? req.body : {};
     const mensagem = body.mensagem || "oi";
 
-    const r = await fetch("https://api.x.ai/v1/chat/completions", {
+    const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + process.env.XAI_API_KEY,
+        "Authorization": "Bearer " + process.env.GROQ_API_KEY,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "grok-beta",
+        model: "llama3-70b-8192",
         messages: [
           { role: "user", content: mensagem }
         ]
