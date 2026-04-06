@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <body style="background:#111;color:#fff;font-family:Arial;padding:20px">
@@ -18,6 +19,76 @@ async function chat(){
     body:JSON.stringify({mensagem:msg.value})
   });
   out.innerText = JSON.stringify(await r.json(),null,2);
+=======
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hermes IA</title>
+<style>
+body { font-family: Arial; background:#0f0f0f; color:#fff; padding:20px; }
+button { padding:10px; margin:5px; cursor:pointer; }
+textarea,input { width:100%; padding:10px; margin:5px 0; }
+.aba { display:none; }
+.ativa { display:block; }
+nav button { background:#222; color:#fff; border:none; }
+</style>
+</head>
+<body>
+
+<h1>🔥 Hermes IA</h1>
+
+<nav>
+  <button onclick="abrir('chat')">Chat IA</button>
+  <button onclick="abrir('ebook')">Ebook</button>
+</nav>
+
+<div id="chat" class="aba ativa">
+  <h2>Chat</h2>
+  <textarea id="msg" placeholder="fala com a IA"></textarea>
+  <button onclick="chat()">Enviar</button>
+</div>
+
+<div id="ebook" class="aba">
+  <h2>Ebook</h2>
+  <input id="tema" placeholder="tema do ebook">
+  <button onclick="ebook()">Gerar Ebook</button>
+</div>
+
+<h2>Resposta</h2>
+<pre id="out"></pre>
+
+<script>
+function abrir(id){
+  document.querySelectorAll('.aba').forEach(e=>e.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+}
+
+async function chat(){
+  document.getElementById("out").innerText = "carregando...";
+
+  const r = await fetch("/api/chat", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ mensagem: document.getElementById("msg").value })
+  });
+
+  const d = await r.json();
+  document.getElementById("out").innerText = JSON.stringify(d,null,2);
+}
+
+async function ebook(){
+  document.getElementById("out").innerText = "gerando ebook...";
+
+  const r = await fetch("/api/ebook", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ tema: document.getElementById("tema").value })
+  });
+
+  const d = await r.json();
+  document.getElementById("out").innerText = JSON.stringify(d,null,2);
+>>>>>>> 5b56d5c4f7ffcf7053dbb41847e1befaba6ff0c1
 }
 </script>
 
