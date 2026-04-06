@@ -1,6 +1,7 @@
 export default async function handler(req, res) {
   try {
-    const { mensagem } = req.body || {};
+    const body = req.body ? req.body : {};
+    const mensagem = body.mensagem || "oi";
 
     const r = await fetch("https://api.x.ai/v1/chat/completions", {
       method: "POST",
@@ -9,9 +10,9 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "grok-1",
+        model: "grok-2-latest",
         messages: [
-          { role: "user", content: mensagem || "oi" }
+          { role: "user", content: mensagem }
         ]
       })
     });
